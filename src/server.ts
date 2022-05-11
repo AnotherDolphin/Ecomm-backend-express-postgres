@@ -1,15 +1,23 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
 import bodyParser from 'body-parser'
+import users from './handlers/users'
+import products from './handlers/products'
+import orders from './handlers/orders'
+// import dashboard from './handlers/dashboard_funs'
 
-const app: express.Application = express()
-const address: string = "0.0.0.0:3000"
+const app = express()
 
 app.use(bodyParser.json())
 
-app.get('/', function (req: Request, res: Response) {
-    res.send('Hello World!')
+app.get('/', function (req, res) {
+  res.send('Hello World!')
 })
 
 app.listen(3000, function () {
-    console.log(`starting app on: ${address}`)
+  console.log(`starting app on: 3000`)
 })
+
+app.use('/users', users)
+app.use('/products', products)
+app.use('/orders', orders)
+// app.use('/services', dashboard)

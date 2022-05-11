@@ -5,33 +5,45 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+- Index `/products` [GET]
+- Show `/products/:id` [GET]
+- Create [token required] `/products` [POST]
+- [OPTIONAL] Top 5 most popular products `/products/popular` [GET]
+- [OPTIONAL] Products by category (args: product category) `/products/:category` [GET]
 
 #### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Index [token required] `/users` [GET]
+- Show [token required] `/users/:id` [GET]
+- Create New `/users` [POST]
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- Current Order by user (args: user id)[token required] `/orders/:uid` [GET]
+- [OPTIONAL] Completed Orders by user (args: user id)[token required] `/orders/:uid/complete` [GET]
 
 ## Data Shapes
 #### Product
--  id
+- id
 - name
 - price
 - [OPTIONAL] category
+
+products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(64) NOT NULL,
+    price integer NOT NULL
+)
 
 #### User
 - id
 - firstName
 - lastName
 - password
+
+users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(100),
+    password_digest VARCHAR
+)
 
 #### Orders
 - id
@@ -40,3 +52,15 @@ These are the notes from a meeting with the frontend developer that describe wha
 - user_id
 - status of order (active or complete)
 
+orders (
+    id SERIAL PRIMARY KEY,
+    status VARCHAR(15),
+    user_id bigint REFERENCES users(id)
+)
+
+order_products (
+    id SERIAL PRIMARY KEY,
+    order_id bigint REFERENCES orders(id),
+    product_id bigint REFERENCES products(id)
+    quantity integer,
+)
