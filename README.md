@@ -13,8 +13,10 @@ fully functional marketplace backend for users to signup, view/create products, 
 1. Fork/Clone the repo and run `npm install` to get all the packages.
 
 2. Create a *.env* file and add the environment vairables:
+   - ENV (default = dev)
    - POSTGRES_HOST
    - POSTGRES_DB
+   - POSTGRES_TEST_DB
    - POSTGRES_USER
    - POSTGRES_PASSWORD
    - SECRET
@@ -24,7 +26,7 @@ fully functional marketplace backend for users to signup, view/create products, 
 
 4. The project is fully written in Typescript, and runs without compliation to JS with the help of **ts-node** using `npm run start`
 
-5. To run the tests in Typescript directly through **ts-jasmine** use `npm run test`
+5. To run the tests in Typescript directly through **ts-jasmine** use `npm run test` (sets ENV=test to use the test DB) or use `npm run jasmine` to test on the main dev DB
 
 ## Endpoints
 

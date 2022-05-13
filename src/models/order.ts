@@ -47,9 +47,7 @@ export class OrderStore {
         const sq =
           'insert into order_products (order_id, product_id, quantity) ' +
           'values($1, $2, $3) returning *'
-        const added = await conn.query(sq, [order.id, pid, o.quantities[i]])
-        console.log(added);
-        
+        const added = await conn.query(sq, [order.id, pid, o.quantities[i]])        
       })
 
       conn.release()

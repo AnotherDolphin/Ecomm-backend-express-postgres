@@ -7,7 +7,8 @@
     "start": "ts-node src/server.ts",
     "dev": "nodemon src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "test": "jasmine-ts",
+    "jasmine": "jasmine-ts",
+    "test": "cross-env ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
     "build": "tsc",
     "migrate": "db-migrate up",
     "de-migrate": "db-migrate down"
@@ -36,11 +37,11 @@
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^17.0.26",
     "@types/pg": "^7.14.7",
-    "cross-env": "^7.0.3",
     "jasmine": "^3.6.4",
     "jasmine-spec-reporter": "^6.0.0",
     "jasmine-ts": "^0.3.0",
     "ts-node": "^9.1.1",
-    "tsc-watch": "^4.2.9"
+    "tsc-watch": "^4.2.9",
+    "cross-env": "^7.0.3"
   }
 }
