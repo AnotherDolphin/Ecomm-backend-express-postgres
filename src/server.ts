@@ -3,7 +3,6 @@ import bodyParser from 'body-parser'
 import users from './handlers/users'
 import products from './handlers/products'
 import orders from './handlers/orders'
-// import dashboard from './handlers/dashboard_funs'
 
 const app = express()
 
@@ -20,4 +19,5 @@ app.listen(3000, function () {
 app.use('/users', users)
 app.use('/products', products)
 app.use('/orders', orders)
-// app.use('/services', dashboard)
+
+export default app

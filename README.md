@@ -1,54 +1,89 @@
-# Storefront Backend Project
+# Storefront Backend
 
-## Getting Started
+fully functional marketplace backend for users to signup, view/create products, and make orders.
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+## Features
+- **Node/Express** server in Typescript
+- **Postgress** database migrated with **db-migrate**
+- Full authentication & authorization with **JWT** and **bcrypt** encryption
+- Models and Enpoints all tested with **Jasmine/Supertest**
 
-## Required Technologies
-Your application must make use of the following libraries:
-- Postgres for the database
-- Node/Express for the application logic
-- dotenv from npm for managing environment variables
-- db-migrate from npm for migrations
-- jsonwebtoken from npm for working with JWTs
-- jasmine from npm for testing
+## Usage
 
-## Steps to Completion
+1. Fork/Clone the repo and run `npm install` to get all the packages.
 
-### 1. Plan to Meet Requirements
+2. Create a *.env* file and add the environment vairables:
+   - POSTGRES_HOST
+   - POSTGRES_DB
+   - POSTGRES_USER
+   - POSTGRES_PASSWORD
+   - SECRET
+   - SALT_ROUNDS
 
-In this repo there is a `REQUIREMENTS.md` document which outlines what this API needs to supply for the frontend, as well as the agreed upon data shapes to be passed between front and backend. This is much like a document you might come across in real life when building or extending an API. 
+3. Run `npm run migrate` to migrate the postgres databse
 
-Your first task is to read the requirements and update the document with the following:
-- Determine the RESTful route for each endpoint listed. Add the RESTful route and HTTP verb to the document so that the frontend developer can begin to build their fetch requests.    
-**Example**: A SHOW route: 'blogs/:id' [GET] 
+4. The project is fully written in Typescript, and runs without compliation to JS with the help of **ts-node** using `npm run start`
 
-- Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.   
-**Example**: You can format this however you like but these types of information should be provided
-Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
+5. To run the tests in Typescript directly through **ts-jasmine** use `npm run test`
 
-**NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape. 
+## Endpoints
 
-### 2.  DB Creation and Migrations
+### Users
+- Create [POST] `/users`
+  - Body: 
+  > `{username: <username>, password: <password>}`
+  - *returns*: Auth Token
+  
+- Index [GET] `/users`
+  - Header:
+  > `Authentication: Bearer <Token>`
+  - *returns*: List of Users
+  
+- Show [GET] `/users/:id`
+  - Header:
+  > `Authentication: Bearer <Token>`
+  - *returns*: User details
 
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
+- Login [POST] `/users/login`
+  - Body: 
+  > `{username: <username>, password: <password>}`
+  - *returns*: Auth Token
 
-You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
+### Products
 
-### 3. Models
+- Index [GET] `/products`
+  - *returns*: List of Products
 
-Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
+- Show [GET] `/products/:id`
+  - *returns*: Product details
 
-### 4. Express Handlers
+- Create [POST] `/products`
+  - Header:
+  > `Authentication: Bearer <Token>`
+  - Body: 
+  > `{name: <name>, price: <price>, category: <category>}`
 
-Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled. 
+- Popular [GET] `/products/popular`
+  - *returns*: Top 5 popular products
 
-### 5. JWTs
+- Filter [GET] `/products/filter/:category`
+  - *returns*: Products that match entered catergory
 
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
+### Orders
 
-### 6. QA and `README.md`
+- Create [POST] `/orders`
+  - Header:
+  > `Authentication: Bearer <Token>`
+  - Body: 
+  > `{user_id: <user_id>, product_ids: <product_id[]>, quantities: <quantity[]>}`
+  - *returns*: new order details
 
-Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
+- Current [GET] `/orders/current`
+  - Header:
+  > `Authentication: Bearer <Token>`
+  - *returns*: current open order of logged user
 
-Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+- Completed [GET] `/orders/completed`
+  - Header:
+  > `Authentication: Bearer <Token>`
+  - *returns*: completed orders of logged user

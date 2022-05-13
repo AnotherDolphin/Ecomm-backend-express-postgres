@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import client from '../db'
 
 export interface User {
-  id?: string
+  id?: number
   username: string
   password: string
 }
@@ -25,7 +25,7 @@ export class UserStore {
     }
   }
 
-  async show(id: string): Promise<User | null> {
+  async show(id: string): Promise<User | null> {    
     try {
       const conn = await client.connect()
       const sql = 'SELECT * FROM users WHERE id=($1)'
@@ -62,7 +62,6 @@ export class UserStore {
     const sql = 'SELECT password_digest FROM users WHERE username=($1)'
     const result = await conn.query(sql, [username])
     conn.release()
-    console.log(result.rows);
     
     if (result.rows.length > 0) {
       const user = result.rows[0]      

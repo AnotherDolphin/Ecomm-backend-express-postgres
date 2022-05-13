@@ -9,15 +9,17 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Show `/products/:id` [GET]
 - Create [token required] `/products` [POST]
 - [OPTIONAL] Top 5 most popular products `/products/popular` [GET]
-- [OPTIONAL] Products by category (args: product category) `/products/:category` [GET]
+- [OPTIONAL] Products by category (args: product category) `/products/filter/:category` [GET]
 
 #### Users
 - Index [token required] `/users` [GET]
 - Show [token required] `/users/:id` [GET]
 - Create New `/users` [POST]
+- Login `/users/login` [POST]
 
 #### Orders
-- Current Order by user (args: user id)[token required] `/orders/:uid` [GET]
+- Create [token required] `/orders` [POST]
+- Current Order by user (args: user id)[token required] `/orders/current` [GET]
 - [OPTIONAL] Completed Orders by user (args: user id)[token required] `/orders/:uid/complete` [GET]
 
 ## Data Shapes

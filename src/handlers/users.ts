@@ -1,7 +1,7 @@
 import express from 'express'
-import { User, UserStore } from '../models.ts/user'
+import { User, UserStore } from '../models/user'
 import jwt from 'jsonwebtoken'
-import { verifyAuthToken } from '../utils'
+import { verifyAuthToken } from '../token_verification'
 
 const pepper = process.env.SECRET!
 const store = new UserStore()
@@ -50,7 +50,7 @@ route.post('/login', async (req, res) => {
   const user: User = {
     username: req.body.username,
     password: req.body.password,
-  }
+  }  
   try {
     const u = await store.authenticate(user.username, user.password)
     if(!u) {

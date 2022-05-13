@@ -1,8 +1,8 @@
 import client from '../db'
 
 export interface Order {
-  id?: string
-  user_id: string
+  id?: number
+  user_id: number
   status: string
   product_ids: number[]
   quantities: number[]
@@ -47,7 +47,9 @@ export class OrderStore {
         const sq =
           'insert into order_products (order_id, product_id, quantity) ' +
           'values($1, $2, $3) returning *'
-        await conn.query(sq, [order.id, pid, o.quantities[i]])
+        const added = await conn.query(sq, [order.id, pid, o.quantities[i]])
+        console.log(added);
+        
       })
 
       conn.release()
@@ -57,14 +59,12 @@ export class OrderStore {
     }
   }
 
-  async current(uid: string): Promise<Order | null> {
+  async current(uid: number): Promise<Order | null> {
     try {
       const conn = await client.connect()
       const sql =
         'SELECT * FROM orders WHERE user_id=($1) and status=($2) limit 1'
       const result = await conn.query(sql, [uid, 'active'])
-      console.log(uid, result.rows)
-
       conn.release()
       const order = result.rows[0]
       return order
@@ -75,14 +75,14 @@ export class OrderStore {
     }
   }
 
-  async completed(uid: string): Promise<Order | null> {
+  async completed(uid: number): Promise<Order[] | null> {
     try {
       const conn = await client.connect()
       const sql =
         'SELECT * FROM orders WHERE user_id=($1) and status=($2)'
       const result = await conn.query(sql, [uid, 'complete'])
       conn.release()
-      const order = result.rows[0]
+      const order = result.rows
       return order
     } catch (err) {
       throw new Error(
@@ -94,8 +94,9 @@ export class OrderStore {
   async fulfil(id: string): Promise<String> {
     try {
       const conn = await client.connect()
-      const sql = 'update orders set status="complete" where id=$1'
-      const result = await conn.query(sql, [id])
+      const arg = 'complete'
+      const sql = 'update orders set status=$1 where id=$2'
+      const result = await conn.query(sql, [arg, id])
       conn.release()
       return 'Done'
     } catch (err) {

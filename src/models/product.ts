@@ -1,7 +1,7 @@
 import client from '../db'
 
 export interface Product {
-  id?: string
+  id?: number
   name: string
   price: number
   category: string
@@ -23,8 +23,8 @@ export class ProductStore {
   async show(id: string): Promise<Product> {
     try {
       const sql = 'SELECT * FROM products WHERE id=($1)'
-      const conn = await client.connect()
-      const result = await conn.query(sql, [id])
+      const conn = await client.connect()      
+      const result = await conn.query(sql, [id])      
       conn.release()
       return result.rows[0]
     } catch (err) {
@@ -37,7 +37,7 @@ export class ProductStore {
       
       const conn = await client.connect()
       const sql =
-      'INSERT INTO products (name, price, categorry) VALUES($1, $2, $3) RETURNING *'
+      'INSERT INTO products (name, price, category) VALUES($1, $2, $3) RETURNING *'
       const result = await conn.query(sql, [p.name, p.price, p.category])
       const product = result.rows[0]
       conn.release()
@@ -55,7 +55,7 @@ export class ProductStore {
         'on products.id = order_products.product_id '+
         'group by products.id '+
         'order by sum(order_products.quantity) desc limit 3'
-      const result = await conn.query(sql)
+      const result = await conn.query(sql)      
       conn.release()
       return result.rows
     } catch (err) {

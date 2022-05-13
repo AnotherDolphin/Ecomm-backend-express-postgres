@@ -1,13 +1,13 @@
 import express from 'express'
-import { Product, ProductStore } from '../models.ts/product'
-import { verifyAuthToken } from '../utils'
+import { Product, ProductStore } from '../models/product'
+import { verifyAuthToken } from '../token_verification'
 
 const store = new ProductStore()
 const route = express.Router()
 
 // list all products (index)
 route.get('/', async (req, res) => {
-  try {
+  try {    
     const products = await store.index()
     res.json(products)
   } catch (err) {
@@ -16,7 +16,7 @@ route.get('/', async (req, res) => {
 })
 
 // create product [requires Token]
-route.post('/', verifyAuthToken, async (req, res) => {  
+route.post('/', verifyAuthToken, async (req, res) => {    
   try {
     const product: Product = {
       name: req.body.name,
@@ -26,6 +26,7 @@ route.post('/', verifyAuthToken, async (req, res) => {
     const p = await store.create(product)
     res.json(p)
   } catch (err) {
+    console.log(err);
     res.status(400).send(err)
   }
 })
@@ -48,11 +49,9 @@ route.get('/filter/:category', async (req, res) => {
     res.json(list)
   } catch (err) {
     console.log(err);
-    
     res.status(400).send(err)
   }
 })
-
 
 // get product (show)
 route.get('/:id', async (req, res) => {
