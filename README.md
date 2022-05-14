@@ -22,11 +22,14 @@ fully functional marketplace backend for users to signup, view/create products, 
    - SECRET
    - SALT_ROUNDS
 
-3. Run `npm run migrate` to migrate the postgres databse
+3. Make sure the Postgres DB is up on port :5432 (default) and run `npm run migrate` to migrate the postgres databse
 
 4. The project is fully written in Typescript, and runs without compliation to JS with the help of **ts-node** using `npm run start`
 
+6. Reach the server on `localhost:3000/` and make your enpoint requests using postman or an alternative
+
 5. To run the tests in Typescript directly through **ts-jasmine** use `npm run test` (sets ENV=test to use the test DB) or use `npm run jasmine` to test on the main dev DB
+
 
 ## Endpoints
 
