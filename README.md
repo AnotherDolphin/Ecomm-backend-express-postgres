@@ -12,23 +12,31 @@ fully functional marketplace backend for users to signup, view/create products, 
 
 1. Fork/Clone the repo and run `npm install` to get all the packages.
 
-2. Create a *.env* file and add the environment vairables:
-   - ENV (default = dev)
-   - POSTGRES_HOST
-   - POSTGRES_DB
-   - POSTGRES_TEST_DB
-   - POSTGRES_USER
-   - POSTGRES_PASSWORD
-   - SECRET
-   - SALT_ROUNDS
+2. connect to postgres with `psql` and create the databases and user:
+    - dev database: `create database storefront;`
+    - test database: `create database storefront_test;`
+    - create a user: `create user <your_user> with password <your_password>;`
+    - grant access on db: `grant all privileges on database storefront to <your_user>;`
+    - grant access on test db: `grant all privileges on database storefront to <your_user>`
 
-3. Make sure the Postgres DB is up on port :5432 (default) and run `npm run migrate` to migrate the postgres databse
+3. Create a *.env* file and populate the environment vairables:
+    - ENV=dev
+    - POSTGRES_HOST=localhost
+    - POSTGRES_DB=storefront
+    - POSTGRES_TEST_DB=storefront_test
+    - POSTGRES_USER=\<your_user\>
+    - POSTGRES_PASSWORD=\<your_password\>
+    - SECRET=shhh
+    - SALT_ROUNDS=10
+  >
 
-4. The project is fully written in Typescript, and runs without compliation to JS with the help of **ts-node** using `npm run start`
+4. Make sure the Postgres DB is up on port :5432 (default) and run `npm run migrate` to migrate the postgres databse
+
+5. The project is fully written in Typescript, and runs without compliation to JS with the help of **ts-node** using `npm run start`
 
 6. Reach the server on `localhost:3000/` and make your enpoint requests using postman or an alternative
 
-5. To run the tests in Typescript directly through **ts-jasmine** use `npm run test` (sets ENV=test to use the test DB) or use `npm run jasmine` to test on the main dev DB
+7. To run the tests in Typescript directly through **ts-jasmine** use `npm run test` (sets ENV=test to use the test DB) or use `npm run jasmine` to test on the main dev DB
 
 
 ## Endpoints
